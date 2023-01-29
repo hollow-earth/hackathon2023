@@ -62,3 +62,7 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
+
+    body{
+      background-color: #979797;
+    }
