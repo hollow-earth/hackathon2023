@@ -1,7 +1,9 @@
+from turtle import color
 from flask import Flask, render_template, request, url_for,  redirect, abort, flash
 import sqlite3
 import db_manager
 import matplotlib.pyplot as plt
+from numpy import array, sort
 
 debugMode = True
 
@@ -104,7 +106,7 @@ def progress():
             x_data.append(row[0])
             y_data.append(row[2]*row[3])
         fig = plt.figure()
-        plt.plot(x_data, y_data)
+        plt.plot(x_data, y_data, marker="o", color="red")
         plt.title("Progression for " + str(exercise))
         plt.savefig("./static/plot.png", format="png")
         plt.close(fig)
