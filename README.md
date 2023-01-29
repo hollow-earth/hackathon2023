@@ -1,4 +1,6 @@
-# hackathon2023
-
-This is a test lmao
-This is a second test xd12
+# Mchacks2023
+## Project name: Musclee
+### What it does:
+Track individual workout progress, targeting muscles.
+### Tool:
+python, sqlite, html, css
