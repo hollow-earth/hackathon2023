@@ -9,11 +9,11 @@ body{
     color: #645dee;
     padding: 0;
     margin: 0;
-    height: 100%;
+    
     font-family: Arial, Helvetica, sans-serif;
 }
 a {
-    
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     color: #0d0c2c;
     text-align: center;
@@ -27,7 +27,8 @@ a {
 .topnav{
     list-style-type: none;
     width: 100%;
-    text-align: center;}
+    text-align: left;
+ text-align:justify;}
 .topnav a:hover {
     background-color: #645dee;
     color: black;
@@ -38,13 +39,37 @@ a {
     background-color: #faf9f9;
     color: #645dee;
   }
+
+  input[type=datetime-local], select, textarea {
+    width: 20%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: inline;
+  }
+  input[type=text], select, textarea {
+    width: 20%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: inline;
+  }
 input[type=text]:focus {
     background-color: lightblue;
     padding: 14px 16px;
     font-size: 20px;
   }
 label {
-    padding: 12px 12px 12px 0;
+    padding: 14px 16px;
     display: inline-block;
+  }
+  input[type=submit] {
+    background-color: #645dee;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: inline-end;
   }
   
