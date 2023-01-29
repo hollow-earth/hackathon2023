@@ -84,10 +84,8 @@ def debugPrintTable(db, tableNum):
     Parameters: tableNum (int): Table num: 0 for tracker, 1 for heatmap
     '''
     cur = db.cursor()
-    if tableNum == 0: 
-        for row in cur.execute("SELECT * FROM workout ORDER BY date").fetchall(): print(row)
-    elif tableNum == 1:
-        for row in cur.execute("SELECT * FROM heatmap ORDER BY date").fetchall(): print(row)
+    if tableNum == 0: return cur.execute("SELECT * FROM workout ORDER BY date").fetchall()
+    elif tableNum == 1: return cur.execute("SELECT * FROM heatmap ORDER BY date").fetchall()
     else: raise Exception("Incorrect tableNum.")
 
 def closeDb(db):
