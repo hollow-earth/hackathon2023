@@ -31,7 +31,7 @@ def index(): return render_template('home.html')
 def input():
     if request.method == 'POST':
         date = request.form["time"]
-        date = int(str(date)[:-6].replace("-",""))
+        date = int(str(date).replace("-",""))
         weight = float(request.form["weight"])
         reps = int(request.form["reps"])
         exercise = str(request.form["exercise"])
@@ -85,7 +85,11 @@ def delete(id):
 @app.route('/muscle')
 def muscle(): return render_template('muscle.html')
 @app.route('/data')
-def data(): return render_template('data.html')
+def data(): 
+    conn = get_db_connection()
+    data = db_manager.fetchRows(conn, 0, None, None)
+    db_manager.closeDb(conn)
+    return render_template('data.html', value=data)
 @app.route('/progress')
 def progress(): return render_template('progress.html')
 
