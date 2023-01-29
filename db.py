@@ -1,11 +1,27 @@
 import sqlite3
 
-con = sqlite3.connect("workouts.db")
-cur = con.cursor()
-cur = cur.execute("CREATE TABLE IF NOT EXISTS workouts(date INTEGER NOT NULL, type TEXT NOT NULL, \
+# con = sqlite3.connect("workouts.db")
+# cur = con.cursor()
+# cur = cur.execute("CREATE TABLE IF NOT EXISTS workouts(date INTEGER NOT NULL, type TEXT NOT NULL, \
+#         reps INTEGER NOT NULL, weight REAL NOT NULL)")
+# cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
+#     score INTEGER NOT NULL)") #, UNIQUE (date, grp))
+
+def openDb():
+    '''
+    Opens the database.
+        Returns: connection to the database.
+    The database consists of two tables: first is workout(int date, string exercise_name,
+    int reps, float weight). The second is heatmap(int date, muscles_worked, float score). 
+    The score is simply rep*sets*weight (in lbs).
+    '''
+    con = sqlite3.connect("workouts.db")
+    cur = con.cursor()
+    cur = cur.execute("CREATE TABLE IF NOT EXISTS workout(date INTEGER NOT NULL, type TEXT NOT NULL, \
         reps INTEGER NOT NULL, weight REAL NOT NULL)")
-cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
-    score INTEGER NOT NULL)") #, UNIQUE (date, grp))
+    cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
+        score INTEGER NOT NULL)")
+    return con
 
 
 def addRows(data, tableNum, db):
@@ -80,4 +96,3 @@ def closeDb(db):
         Parameters: database object: database to close
     '''
     db.close()
-    db = None
