@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS workouts;
+-- DROP TABLE IF EXISTS workouts;
 
 CREATE TABLE workouts (
     date INTEGER NOT NULL, 
