@@ -8,9 +8,10 @@ def openDb():
     '''
     con = sqlite3.connect("workout.db")
     cur = con.cursor()
-    if cur.fetchall() == []:
-        cur.execute("CREATE TABLE workout(date, type, reps, weight)") 
-    # cur.execute("CREATE TABLE heatmap(group, relative_num)")
+    cur = cur.execute("CREATE TABLE IF NOT EXISTS workout(date INTEGER NOT NULL, type TEXT NOT NULL, \
+        reps INTEGER NOT NULL, weight REAL NOT NULL)")
+    cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
+        frac_num REAL NOT NULL)")
         # If you have 3 sets just call add 3 lines so they can all have diff. 
         # weight and reps
     return con
@@ -27,10 +28,9 @@ def addRows(data, tableNum, db):
         Returns: database object (sqlite)
     '''
     cur = db.cursor()
-    # TODThis will definitely break if not handled properly, add a check when you've got time
     if tableNum == 0: 
         res = cur.execute("SELECT name FROM sqlite_master")
-        print(res.fetchone())
+        print(res.fetchall())
         cur.executemany("INSERT INTO workout VALUES(?, ?, ?, ?)", data)
     elif tableNum == 1: cur.executemany("INSERT INTO heatmap VALUES(?, ?, ?)", data)
     db.commit()
