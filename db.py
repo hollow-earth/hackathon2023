@@ -11,13 +11,10 @@ def openDb():
     cur = cur.execute("CREATE TABLE IF NOT EXISTS workout(date INTEGER NOT NULL, type TEXT NOT NULL, \
         reps INTEGER NOT NULL, weight REAL NOT NULL)")
     cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
-        frac_num REAL NOT NULL)")
+        frac_num REAL NOT NULL)") #, UNIQUE (date, grp))
         # If you have 3 sets just call add 3 lines so they can all have diff. 
         # weight and reps
     return con
-
-def retrieveRows():
-    pass
 
 def addRows(data, tableNum, db):
     '''
@@ -28,23 +25,29 @@ def addRows(data, tableNum, db):
         Returns: database object (sqlite)
     '''
     cur = db.cursor()
-    if tableNum == 0: 
-        res = cur.execute("SELECT name FROM sqlite_master")
-        print(res.fetchall())
-        cur.executemany("INSERT INTO workout VALUES(?, ?, ?, ?)", data)
+    if tableNum == 0: cur.executemany("INSERT INTO workout VALUES(?, ?, ?, ?)", data)
     elif tableNum == 1: cur.executemany("INSERT INTO heatmap VALUES(?, ?, ?)", data)
+    else: raise Exception("Incorrect tableNum.")
     db.commit()
     
 
 def deleteRows():
     pass
 
-# def debugPrintTable(db):
-#     '''
-#     Prints the entire contents of the database for a given table.
-#     Parameters: tableNum (int): Table num: 0 for tracker, 1 for heatmap
-#     '''
+def retrieveRows():
+    pass
 
+def debugPrintTable(db, tableNum):
+    '''
+    Prints the entire contents of the database for a given table.
+    Parameters: tableNum (int): Table num: 0 for tracker, 1 for heatmap
+    '''
+    cur = db.cursor()
+    if tableNum == 0: 
+        for row in cur.execute("SELECT * FROM workout ORDER BY date").fetchall(): print(row)
+    elif tableNum == 1:
+        for row in cur.execute("SELECT * FROM heatmap ORDER BY date").fetchall(): print(row)
+    else: raise Exception("Incorrect tableNum.")
 
 def closeDb(db):
     '''
@@ -57,7 +60,6 @@ def closeDb(db):
     return 0
 
 workout = openDb();
-input()
-addRows(data = [(20230128,"Chest Press",8,135.0)], tableNum=0, db=workout)
+addRows(data = [(20230128,"Chest Press",0,1), (20230128,"Chest Press",0,1)], tableNum=0, db=workout)
+debugPrintTable(db=workout, tableNum=0)
 closeDb(workout)
-input()
