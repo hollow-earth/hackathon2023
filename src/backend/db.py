@@ -1,5 +1,7 @@
 import sqlite3
 
+# TODO: maybe add a updateRow function? Idk if that's feasible in the short time we have left
+
 def openDb():
     '''
     Opens the database.
@@ -13,7 +15,7 @@ def openDb():
     cur = cur.execute("CREATE TABLE IF NOT EXISTS workout(date INTEGER NOT NULL, type TEXT NOT NULL, \
         reps INTEGER NOT NULL, weight REAL NOT NULL)")
     cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
-        score INTEGER NOT NULL)") #, UNIQUE (date, grp))
+        score INTEGER NOT NULL)")
     return con
 
 def addRows(data, tableNum, db):
@@ -30,11 +32,32 @@ def addRows(data, tableNum, db):
     elif tableNum == 1: cur.executemany("INSERT INTO heatmap VALUES(?, ?, ?)", data)
     else: raise Exception("Incorrect tableNum.")
     db.commit()
-    
 
-def deleteRows():
+def __searchOptions(tableNum, date, other_query):
+    '''
+    Internal function for getting search options.
+        Parameters:
+            tableName (int): Table num: 0 for tracker, 1 for heatmap
+            date (int/None): the date. Can be either an int or None
+            other_query: (string/None): either muscle group (grp) for heatmap or type for the exercise
+    '''
+    options = ""
+    if tableNum != 0 and tableNum != 1: raise Exception("Incorrect tableNum.")
+    if tableNum == 0 and other_query != None: options += " type = \"" + str(other_query) + "\""
+    if tableNum == 1 and other_query != None: options += " grp = \"" + str(other_query) + "\""
+    if date != None: options += " date = " + str(date)
+    if options != "": options = " WHERE" + options
+    return options
 
-    pass
+def deleteRows(db, tableNum, date, other_query):
+    '''
+    Deletes rows that match the search parameters.
+    '''
+    cur = db.cursor()
+    options = __searchOptions(tableNum, date, other_query)
+    if options != None or options != "":
+        if tableNum == 0: cur.execute("DELETE FROM workout" + options)
+        if tableNum == 1: cur.execute("DELETE FROM heatmap" + options)
 
 def fetchRows(db, tableNum, date, other_query):
     '''
@@ -42,20 +65,11 @@ def fetchRows(db, tableNum, date, other_query):
     Parameters: tableNum (int): Table num: 0 for tracker, 1 for heatmap
     ''' # TODO: add all exercises mode?
     cur = db.cursor()
-    data = []
-    where = ""
-    
-    # Search options
-    if tableNum == 0 and other_query != None: where += " type = \"" + str(other_query) + "\""
-    if tableNum == 1 and other_query != None: where += " grp = \"" + str(other_query) + "\""
-    if date != None: where += " date = " + str(date)
-    if where != "": where = " WHERE" + where
+    searchOptions = __searchOptions(tableNum, date, other_query)
 
-    # Actual search
-    if tableNum == 0: data = cur.execute("SELECT * FROM workout" + where).fetchall()
-    elif tableNum == 1: data = cur.execute("SELECT * FROM heatmap" + where).fetchall()
+    if tableNum == 0: return cur.execute("SELECT * FROM workout" + searchOptions).fetchall()
+    elif tableNum == 1: return cur.execute("SELECT * FROM heatmap" + searchOptions).fetchall()
     else: raise Exception("Incorrect tableNum.")
-    return data
 
 def debugPrintTable(db, tableNum):
     '''
@@ -73,14 +87,13 @@ def closeDb(db):
     '''
     Closes the database.
         Parameters: database object: database to close
-        Returns: status (bool): 0 if closed correctly
     '''
     db.close()
     db = None
-    return 0
 
 workout = openDb();
 # addRows(data = [(20230126,"Incline Bench Press",0,1), (20230125,"Lateral Raises",0,1)], tableNum=0, db=workout)
 # debugPrintTable(db=workout, tableNum=0)
+# deleteRows(workout, 0, None, "Chest Press")
 print(fetchRows(workout, 0, None, "Chest Press"))
 closeDb(workout)
