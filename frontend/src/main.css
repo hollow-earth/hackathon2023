@@ -9,25 +9,32 @@ body{
     color: #645dee;
     padding: 0;
     margin: 0;
-    height: 100%;
+    
     font-family: Arial, Helvetica, sans-serif;
 }
 a {
-    
+  float: left;
+  display: block;
+  padding: 14px 16px;
+  text-decoration: none;
+
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    color: #0d0c2c;
+    color: #645dee;
     text-align: center;
-    background-color: #72b899;
-    padding: 14px 16px;
     
-    border-style: solid;
-    width: 288px;
 }
 /* Change the color of links on hover */
 .topnav{
+
     list-style-type: none;
+    
+    margin: 0;
+    padding: 0;
+    float: left;
+    overflow: hidden;
     width: 100%;
-    text-align: center;}
+    text-align: left;}
 .topnav a:hover {
     background-color: #645dee;
     color: black;
@@ -38,13 +45,48 @@ a {
     background-color: #faf9f9;
     color: #645dee;
   }
+
+  input[type=datetime-local], select, textarea {
+    width: 20%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: inline;
+  }
+  input[type=text], select, textarea {
+    width: 20%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: inline;
+  }
 input[type=text]:focus {
     background-color: lightblue;
-    padding: 14px 16px;
+    padding: 12px;
+    font-size: 20px;
+  }
+  input[type=datetime-local]:focus {
+    background-color: lightblue;
+    padding: 12px;
     font-size: 20px;
   }
 label {
-    padding: 12px 12px 12px 0;
-    display: inline-block;
+    font-size: 20px;
+    
   }
+  input[type=submit] {
+    background-color: #645dee;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: inline-end;
+  }
+  .header {
+    background-color: #f1f1f1;
+    padding: 20px;
+    text-align: center;
+  }
+
   
