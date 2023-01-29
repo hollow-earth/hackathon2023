@@ -1,7 +1,5 @@
 import sqlite3
 
-from matplotlib.pyplot import table
-
 def openDb():
     '''
     Opens the database.
