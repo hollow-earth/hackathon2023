@@ -2,19 +2,22 @@ from flask import Flask, render_template, request, url_for,  redirect, abort, fl
 import sqlite3
 import db_manager
 
+debugMode = True
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
-# def get_db_connection(): # Untested
-    # conn = db_manager.openDb()
+def get_db_connection(): # Untested
+    conn = db_manager.openDb()
     # conn = None
-    # conn = sqlite3.connect('workouts.db')
-    # conn.row_factory = sqlite3.Row
+    conn = sqlite3.connect('workouts.db')
+    conn.row_factory = sqlite3.Row
+    print("Deez")
     # another comment
-    # return conn
+    return conn
 
 def get_workout(date, other_query): # Untested, to be fixed
-    conn = db_manager.openDb()
+    conn = get_db_connection()
     data = db_manager.fetchRows(conn, 0, date, other_query)
     db_manager.closeDb(conn)
     if data is None: abort(404)
@@ -41,9 +44,8 @@ def input():
             conn = db_manager.openDb()
             db_manager.addRows(db=conn, tableNum=0, data=[(date, exercise, reps, weight)])
             conn.commit()
-            print(db_manager.debugPrintTable(conn, 0))
-            print("Bruh")
-            conn.close()
+            if debugMode: print(db_manager.debugPrintTable(conn, 0))
+            db_manager.closeDb(conn)
             return redirect(url_for('data'))
     return render_template('input.html')
 
@@ -89,4 +91,4 @@ def progress(): return render_template('progress.html')
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=debugMode)

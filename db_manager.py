@@ -1,12 +1,5 @@
 import sqlite3
 
-# con = sqlite3.connect("workouts.db")
-# cur = con.cursor()
-# cur = cur.execute("CREATE TABLE IF NOT EXISTS workouts(date INTEGER NOT NULL, type TEXT NOT NULL, \
-#         reps INTEGER NOT NULL, weight REAL NOT NULL)")
-# cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
-#     score INTEGER NOT NULL)") #, UNIQUE (date, grp))
-
 def openDb():
     '''
     Opens the database.
@@ -17,7 +10,7 @@ def openDb():
     '''
     con = sqlite3.connect("workouts.db")
     cur = con.cursor()
-    cur = cur.execute("CREATE TABLE IF NOT EXISTS workout(date INTEGER NOT NULL, type TEXT NOT NULL, \
+    cur = cur.execute("CREATE TABLE IF NOT EXISTS workouts(date INTEGER NOT NULL, type TEXT NOT NULL, \
         reps INTEGER NOT NULL, weight REAL NOT NULL)")
     cur = cur.execute("CREATE TABLE IF NOT EXISTS heatmap(date INTEGER NOT NULL, grp TEXT NOT NULL, \
         score INTEGER NOT NULL)")
@@ -63,7 +56,7 @@ def deleteRows(db, tableNum, date, other_query):
     cur = db.cursor()
     options = __searchOptions(tableNum, date, other_query)
     if options != None or options != "":
-        if tableNum == 0: cur.execute("DELETE FROM workout" + options)
+        if tableNum == 0: cur.execute("DELETE FROM workouts" + options)
         if tableNum == 1: cur.execute("DELETE FROM heatmap" + options)
 
 def fetchRows(db, tableNum, date, other_query):
@@ -74,7 +67,7 @@ def fetchRows(db, tableNum, date, other_query):
     cur = db.cursor()
     searchOptions = __searchOptions(tableNum, date, other_query)
 
-    if tableNum == 0: return cur.execute("SELECT * FROM workout" + searchOptions).fetchall()
+    if tableNum == 0: return cur.execute("SELECT * FROM workouts" + searchOptions).fetchall()
     elif tableNum == 1: return cur.execute("SELECT * FROM heatmap" + searchOptions).fetchall()
     else: raise Exception("Incorrect tableNum.")
 
@@ -84,7 +77,7 @@ def debugPrintTable(db, tableNum):
     Parameters: tableNum (int): Table num: 0 for tracker, 1 for heatmap
     '''
     cur = db.cursor()
-    if tableNum == 0: return cur.execute("SELECT * FROM workout ORDER BY date").fetchall()
+    if tableNum == 0: return cur.execute("SELECT * FROM workouts ORDER BY date").fetchall()
     elif tableNum == 1: return cur.execute("SELECT * FROM heatmap ORDER BY date").fetchall()
     else: raise Exception("Incorrect tableNum.")
 
