@@ -24,7 +24,9 @@ a {
     width: 288px;
 }
 /* Change the color of links on hover */
-.topnav{list-style-type: none;
+.topnav{
+    list-style-type: none;
+    width: 100%;
     text-align: center;}
 .topnav a:hover {
     background-color: #645dee;
@@ -36,3 +38,13 @@ a {
     background-color: #faf9f9;
     color: #645dee;
   }
+input[type=text]:focus {
+    background-color: lightblue;
+    padding: 14px 16px;
+    font-size: 20px;
+  }
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+  
