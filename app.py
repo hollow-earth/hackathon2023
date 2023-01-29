@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, url_for,  redirect, abort, flash
 import sqlite3
 import db_manager
+import matplotlib.pyplot as plt
 
 debugMode = True
 
@@ -9,11 +10,8 @@ app.config['SECRET_KEY'] = 'your secret key'
 
 def get_db_connection(): # Untested
     conn = db_manager.openDb()
-    # conn = None
     conn = sqlite3.connect('workouts.db')
     conn.row_factory = sqlite3.Row
-    print("Deez")
-    # another comment
     return conn
 
 def get_workout(date, other_query): # Untested, to be fixed
@@ -89,10 +87,29 @@ def data():
     conn = get_db_connection()
     data = db_manager.fetchRows(conn, 0, None, None)
     db_manager.closeDb(conn)
+    # data.sort() # TODO: sort by date
     return render_template('data.html', value=data)
-@app.route('/progress')
-def progress(): return render_template('progress.html')
 
+@app.route('/progress', methods=("GET", "POST"))
+def progress(): 
+    if request.method == 'POST':
+        exercise = request.form["exercise"]
+        if not exercise: flash("Date is required! (date)")
+        conn = get_db_connection()
+        data = db_manager.fetchRows(conn, 0, None, str(exercise))
+        db_manager.closeDb(conn)
+        x_data = []
+        y_data = []
+        for row in data:
+            x_data.append(row[0])
+            y_data.append(row[2]*row[3])
+        fig = plt.figure()
+        plt.plot(x_data, y_data)
+        plt.title("Progression for " + str(exercise))
+        plt.savefig("./plot.png", format="png")
+        plt.close(fig)
+
+    return render_template('progress.html')
 
 if __name__ == "__main__":
     app.run(debug=debugMode)
