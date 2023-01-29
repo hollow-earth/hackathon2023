@@ -10,6 +10,7 @@ app.config['SECRET_KEY'] = 'your secret key'
     # conn = None
     # conn = sqlite3.connect('workouts.db')
     # conn.row_factory = sqlite3.Row
+    # another comment
     # return conn
 
 def get_workout(date, other_query): # Untested, to be fixed
