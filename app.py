@@ -106,7 +106,7 @@ def progress():
         fig = plt.figure()
         plt.plot(x_data, y_data)
         plt.title("Progression for " + str(exercise))
-        plt.savefig("./plot.png", format="png")
+        plt.savefig("./static/plot.png", format="png")
         plt.close(fig)
 
     return render_template('progress.html')
